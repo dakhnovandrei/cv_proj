@@ -1,12 +1,12 @@
 import os
-from ..models import Users
-from ..database import get_db
+from src.models import Users
+from src.database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from datetime import timedelta
 from sqlalchemy.orm import Session
-from .auth import create_access_token, create_refresh_token, pwd_context
+from src.routers.auth import create_access_token, create_refresh_token, pwd_context
 from dotenv import load_dotenv
-from ..schemas import UserCreate, AuthResponse, UserLogin
+from src.schemas import UserCreate, AuthResponse, UserLogin
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")

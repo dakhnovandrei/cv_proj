@@ -1,8 +1,9 @@
 import enum
-from sqlalchemy.orm import relationship
-from database import Base
+from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import Column, Integer, String, Enum, Boolean, DateTime, JSON, ForeignKey, Float, Text
 import datetime
+
+Base = declarative_base()
 
 
 class AnalysisStatus(enum.Enum):
