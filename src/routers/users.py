@@ -43,12 +43,12 @@ def login(users: UserLogin, response: Response, db: Session = Depends(get_db)) -
         raise HTTPException(status_code=401, detail="Неправильная почта или пароль")
 
     access_token = create_access_token(
-        data={'sub': user.email, 'permissions': user.email_verified},
+        data={'sub': user.email,},
         expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES),
     )
 
     refresh_token = create_refresh_token(
-        data={'sub': user.email, 'permissions': user.email_verified},
+        data={'sub': user.email,},
         expires_delta=timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES),
     )
     response.set_cookie(

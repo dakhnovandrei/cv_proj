@@ -21,11 +21,10 @@ class Users(Base):
     email = Column(String(100), unique=True, nullable=False, index=True)
     password = Column(String(255), nullable=False)
     is_active = Column(Boolean, default=False)
-    # if we re going to verifies emails with letters
-    # email_verified = Column(Boolean, default=False)
-    # verified_token = Column(String, unique=True)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
+
+    analysis = relationship("Analysis", back_populates="user")
 
 
 class TritonModels(Base):
@@ -46,7 +45,7 @@ class InferenceRequests(Base):
     request_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.user_id"))
     model_id = Column(Integer, ForeignKey("triton_models.model_id"))
-
+    analysis_id = Column(Integer, ForeignKey("analysis.analysis_id"))
     # data for request
     input_shape = Column(JSON)
     input_data_type = Column(String(20))
@@ -68,6 +67,7 @@ class InferenceRequests(Base):
     user = relationship("Users")
     model = relationship("TritonModels")
     response = relationship("InferenceResponses", uselist=False, back_populates="request")
+    analysis = relationship("Analysis", back_populates="inference_request")
 
 
 class InferenceResponses(Base):
@@ -99,6 +99,7 @@ class DetectionResults(Base):
 
     detection_id = Column(Integer, primary_key=True, index=True)
     response_id = Column(Integer, ForeignKey("inference_responses.response_id"))
+    disease_id = Column(Integer, ForeignKey('diseases.disease_id'), nullable=False)
 
     class_id = Column(Integer, nullable=False)
     class_name = Column(String(100), nullable=False)
@@ -106,10 +107,8 @@ class DetectionResults(Base):
     bbox = Column(JSON, nullable=False)
     bbox_pixels = Column(JSON)
 
-    disease_id = Column(Integer, ForeignKey('diseases.disease_id'), nullable=False)
-
     response = relationship("InferenceResponses")
-    disease = relationship("Diseases")
+    disease = relationship("Diseases", back_populates="detection_results")
 
 
 class Diseases(Base):
@@ -123,11 +122,11 @@ class Diseases(Base):
     severity = Column(String(50))
     created_at = Column(DateTime, default=datetime.datetime.utcnow())
 
-    detection_results = relationship("DetectionResults", back_populates="diseases")
+    detection_results = relationship("DetectionResults", back_populates="disease")
 
 
 class Analysis(Base):
-    __tablename__ = "analyses"
+    __tablename__ = "analysis"
 
     analysis_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.user_id"), nullable=False)
@@ -142,8 +141,8 @@ class Analysis(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow())
     completed_at = Column(DateTime)
 
-    user = relationship("User", back_populates="analyses")
-    inference_request = relationship('InferenceRequest', uselist=False, back_populates="analysis")
+    user = relationship("Users", back_populates="analysis")
+    inference_request = relationship('InferenceRequests', uselist=False, back_populates="analysis")
 
 
 class ModelPerformance(Base):
@@ -159,4 +158,4 @@ class ModelPerformance(Base):
     error_rate = Column(Float)
     gpu_memory_usage = Column(Float)
 
-    model = relationship("TritonModel")
+    model = relationship("TritonModels")
