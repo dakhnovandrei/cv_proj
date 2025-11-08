@@ -79,6 +79,7 @@ class InferenceResponses(Base):
     # answer from triton
     raw_output = Column(JSON)
     output_shape = Column(JSON)
+    pic_url = Column(String)
 
     # post-processed results
     detection = Column(JSON)
@@ -105,7 +106,6 @@ class DetectionResults(Base):
     class_name = Column(String(100), nullable=False)
     confidence = Column(Float, nullable=False)
     bbox = Column(JSON, nullable=False)
-    bbox_pixels = Column(JSON)
 
     response = relationship("InferenceResponses")
     disease = relationship("Diseases", back_populates="detection_results")
@@ -133,13 +133,15 @@ class Analysis(Base):
 
     original_filename = Column(String(255), nullable=False)
     original_image_path = Column(String(500), nullable=False)
-    file_size = Column(Integer)
-    image_dimensions = Column(JSON)  # {"width": 1920, "height": 1080}
+
+    processed_image_path = Column(String(500))
 
     status = Column(Enum(AnalysisStatus), default=AnalysisStatus.pending)
     error_message = Column(Text)
     created_at = Column(DateTime, default=datetime.datetime.utcnow())
     completed_at = Column(DateTime)
+
+    detection_sum = Column(JSON)
 
     user = relationship("Users", back_populates="analysis")
     inference_request = relationship('InferenceRequests', uselist=False, back_populates="analysis")
