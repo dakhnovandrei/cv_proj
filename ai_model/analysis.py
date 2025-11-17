@@ -3,11 +3,12 @@ import cv2
 import numpy as np
 import yaml
 from ultralytics import YOLO
+
 # from src.routers.minio_client import upload_images
 
 # Конфигурация
-MODEL_PATH = '../runs/detect/plant_disease_exp16/weights/best.pt'
-dataset = "C:\\Users\\User\\Desktop\\proj_1\\plant-diseases-detection-system-18"
+MODEL_PATH = '../runs/detect/plant_disease_exp162/weights/best.pt'
+dataset = "C:\\Users\\User\\Desktop\\proj_1\\plant-disease-1"
 DATA_YAML = os.path.join(dataset, 'data.yaml')
 
 # Загрузка классов
@@ -127,7 +128,6 @@ def detection_with_minio(image_path, color_threshold=0.3):
     """
     detected_boxes, original_bgr, color_stats = hybrid_plant_detector(image_path, color_threshold)
 
-    # Создаем копию для рисования
     result_image = original_bgr.copy()
 
     # Рисуем bounding boxes
@@ -139,13 +139,13 @@ def detection_with_minio(image_path, color_threshold=0.3):
 
         # Выбираем цвет в зависимости от типа растения
         if box_info['green_ratio'] > 0.3:
-            color = (0, 255, 0)  # Зеленый в BGR
+            color = (0, 255, 0)
         elif box_info['yellow_ratio'] > 0.2:
-            color = (0, 255, 255)  # Желтый в BGR
+            color = (0, 255, 255)
         elif box_info['brown_ratio'] > 0.2:
-            color = (0, 0, 255)  # Коричневый в BGR
+            color = (0, 0, 255)
         else:
-            color = (255, 0, 0)  # Синий в BGR
+            color = (255, 0, 0)
 
         # Рисуем bounding box
         cv2.rectangle(result_image, (x1, y1), (x2, y2), color, 3)
