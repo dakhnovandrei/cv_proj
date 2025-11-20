@@ -5,9 +5,9 @@ import os
 import datetime
 from pydantic import ValidationError
 
-from ..database import get_db
+from src.database import get_db
 from sqlalchemy.orm import Session
-from ..models import Users
+from src.models import Users
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
