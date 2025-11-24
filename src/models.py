@@ -17,8 +17,7 @@ class Users(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
 
-    user_request = relationship("UserRequests", back_populates="user")
-    analysis = relationship("Analysis", back_populates="user")
+    user_requests = relationship("UserRequests", back_populates="user")
 
 
 class UserRequests(Base):
@@ -26,42 +25,33 @@ class UserRequests(Base):
 
     request_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.user_id"))
-    image = Column(String(100), nullable=False)
+    image_path = Column(String(255), nullable=False)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow())
 
-    user = relationship("Users", back_populates="user_request")
-    response = relationship("ModelResponse", back_populates="request")
+    user = relationship("Users", back_populates="user_requests")
+    results = relationship("AnalysisResult", back_populates="request")
 
 
-class ModelResponse(Base):
-    __tablename__ = "model_response"
-
-    response_id = Column(Integer, primary_key=True, index=True)
-    request_id = Column(Integer, ForeignKey("user_requests.request_id"))
-    timestamp = Column(DateTime, default=datetime.datetime.utcnow())
-
-    analysis = relationship("Analysis", back_populates="response")
-    request = relationship("UserRequests", back_populates="response")
-
-
-class Analysis(Base):
+class AnalysisResult(Base):
     __tablename__ = "analysis"
 
     analysis_id = Column(Integer, primary_key=True, index=True)
-    processed_image = Column(String, nullable=False)
+    request_id = Column(Integer, ForeignKey("user_requests.request_id"))
     disease_id = Column(Integer, ForeignKey("diseases.disease_id"))
+    processed_image = Column(String, nullable=False)
     confidence = Column(Float, nullable=False)
+    bbox = Column(JSON, nullable=False)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow())
 
-    response = relationship("ModelResponse", back_populates="analysis")
-    disease = relationship("Diseases", back_populates="analysis")
+    request = relationship("UserRequests", back_populates="results")
+    disease = relationship("Diseases", back_populates="detected_cases")
 
 
 class Diseases(Base):
     __tablename__ = "diseases"
 
     disease_id = Column(Integer, primary_key=True, index=True)
-    disease_name = Column(String(50), nullable=False)
+    disease_name = Column(String(50), nullable=False, unique=True, index=True)
     recommendation = Column(Text, nullable=False)
 
-    analysis = relationship("Analysis", back_populates="disease")
+    detected_cases = relationship("AnalysisResult", back_populates="disease")

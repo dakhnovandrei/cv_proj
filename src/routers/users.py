@@ -1,6 +1,6 @@
 import logging
 import os
-from src.models import Users, UserRequests, ModelResponse, Analysis
+from src.models import Users, UserRequests, AnalysisResult
 from src.database import get_db
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Query
 from datetime import timedelta
