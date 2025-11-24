@@ -1,9 +1,8 @@
 import os.path
 import sys
 import tempfile
-import cv2
+from ..schemas import AnalysisResponse
 from fastapi import HTTPException, Depends, APIRouter, UploadFile, File
-from fastapi.responses import Response
 from .auth import get_current_user
 from ..database import get_db
 from sqlalchemy.orm import Session
@@ -15,7 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 analyze_router = APIRouter()
 
 
-@analyze_router.post("/analyze", tags=["Analyze"])
+@analyze_router.post("/analyze", tags=["Analyze"], response_model=AnalysisResponse)
 async def analysis(
         file: UploadFile = File(...),
         user=Depends(get_current_user),
@@ -70,10 +69,10 @@ async def analysis(
                 "confidence": round(confidence, 2),
                 "recommendation": disease.recommendation
             })
-        return {
-            "image_url": res_image_url,
-            "results": results
-        }
+        return AnalysisResponse(
+            image_url=res_image_url,
+            results=results
+        )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing image: {str(e)}")

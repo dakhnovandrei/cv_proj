@@ -15,7 +15,7 @@ services:
       - minio
     volumes:
       # Монтируем папку с YOLO весами
-      - ./runs/detect/plant_disease_exp162:/app/model
+      - ./runs/detect/plant_disease_exp2:/app/model
       # Монтируем папку с ai_model для разработки (код можно менять без пересборки)
       - ./ai_model:/app/ai_model
       # Папка output для временных файлов/результатов
