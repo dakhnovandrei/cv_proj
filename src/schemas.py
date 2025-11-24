@@ -20,31 +20,26 @@ class UserLogin(BaseModel):
     password: str
 
 
-# class AnalysisBase(BaseModel):
-#     analysis_id: int
-#     original_image_url: str
-#     processed_image_url: Optional[str]
-#     status: str
-#     created_at: datetime
-#     processing_time: Optional[float]
-#     detections_summary: Optional[Dict[str, Any]]
-#
-#
-# class AnalysisList(BaseModel):
-#     analyses: List[AnalysisBase]
-#     total: int
-#
-# class DetectionResponse(BaseModel):
-#     class_name: str
-#
-#
-# class AnalysisResponse(AnalysisBase):
-#     detection = List[DetectionResponse]
-#
-#     class Config:
-#         from_attributes = True
+class DiseaseResult(BaseModel):
+    disease: str = Field(example="leaf_spot")
+    confidence: float = Field(example=0.85, ge=0, le=1)
+    recommendation: str = Field(example="Apply fungicide...")
 
-class ProccessingRes(BaseModel):
-    image_url: str
-    detection_count: int
-    status: str
+
+class AnalysisResponse(BaseModel):
+    image_url: str = Field(example="https://minio.example.com/bucket/image.jpg")
+    results: List[DiseaseResult]
+
+
+class AnalysisHistoryItem(BaseModel):
+    request_id: int = Field(example=123)
+    image_url: str = Field(example="https://minio.example.com/bucket/image.jpg")
+    created_at: datetime = Field(example="2025-11-25T0:43:10.000Z")
+    results: list[DiseaseResult]
+
+
+class AnalysisHistoryList(BaseModel):
+    total: int = Field(example=15, ge=0)
+    page: int = Field(example=1, ge=1)
+    page_size: int = Field(example=10, ge=1, le=100)
+    history: list[AnalysisHistoryItem]

@@ -14,7 +14,7 @@ minio_client = Minio(
     MINIO_ENDPOINT,
     access_key=MINIO_ACCESS_KEY,
     secret_key=MINIO_SECRET_KEY,
-    secure=MINIO_SECURE
+    secure=False
 )
 
 
@@ -50,7 +50,7 @@ def upload_images(file_data: bytes, filename: str, content_type: str = "image/jp
         raise
 
 
-def delite_image(filename: str):
+def delete_image(filename: str):
     try:
         minio_client.remove_object(BUCKET_NAME, filename)
     except S3Error as e:
