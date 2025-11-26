@@ -12,6 +12,8 @@ ENV/
 
 # Python
 __pycache__/
+alembic/versions/__pycache__/
+alembic/__pycache__/
 *.py[cod]
 *$py.class
 *.so
@@ -79,3 +81,7 @@ static/uploads/
 htmlcov/
 .coverage
 .coverage.*
+
+
+ai_model/plant-disease-1
+plant-diseases-detection-system-18
