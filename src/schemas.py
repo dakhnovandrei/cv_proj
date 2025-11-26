@@ -22,7 +22,6 @@ class UserLogin(BaseModel):
 
 class DiseaseResult(BaseModel):
     disease: str = Field(example="leaf_spot")
-    confidence: float = Field(example=0.85, ge=0, le=1)
     recommendation: str = Field(example="Apply fungicide...")
 
 

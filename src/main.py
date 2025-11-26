@@ -1,15 +1,13 @@
 import logging
 import os
 import sys
-
 from fastapi import FastAPI
-from sqlalchemy import text
-
 from src.database import engine, SessionLocal
 from src.routers.users import router
 from src.routers.analyze_image import analyze_router
 from authx import AuthX, AuthXConfig
-from src.models import Base, Users, AnalysisResult, UserRequests  # обязательно импортируем модели, чтобы их зарегистрировать
+from src.models import Base, Users, AnalysisResult, \
+    UserRequests  # обязательно импортируем модели, чтобы их зарегистрировать
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 # Настраиваем AuthX

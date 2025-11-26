@@ -103,7 +103,6 @@ def request_history(
                     disease_res.append(
                         DiseaseResult(
                             disease=disease.disease_name,
-                            confidence=float(disease.confidence),
                             recommendation=disease.recommendation
                         )
                     )
@@ -146,7 +145,6 @@ def request_analysis(
             disease_res.append(
                 DiseaseResult(
                     disease=disease.disease_name,
-                    confidence=float(disease.confidence),
                     recommendation=disease.recommendation
                 ))
     return AnalysisHistoryItem(
