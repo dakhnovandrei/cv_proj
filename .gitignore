@@ -12,6 +12,8 @@ ENV/
 
 # Python
 __pycache__/
+alembic/versions/__pycache__/
+alembic/__pycache__/
 *.py[cod]
 *$py.class
 *.so
