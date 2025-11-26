@@ -41,7 +41,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return {"message": "User registered successfully", "User_id": new_user.user_id}
 
 
-@router.post("/login", summary="login in account")
+@router.post("/login", summary="login in account", tags=["Auth"])
 def login(users: UserLogin, response: Response, db: Session = Depends(get_db)) -> AuthResponse:
     user = db.query(Users).filter(Users.email == users.email).first()
     logger.info(user)

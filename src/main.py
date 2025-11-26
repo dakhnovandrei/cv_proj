@@ -23,7 +23,7 @@ Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-app.include_router(router, prefix='/api/v1', tags=["Auth"])
+app.include_router(router, prefix='/api/v1')
 app.include_router(analyze_router, prefix='/api/v2', tags=["Analyze"])
 
 logger = logging.getLogger("uvicorn")  # использовать логгер Uvicorn
