@@ -40,7 +40,6 @@ class AnalysisResult(Base):
     disease_id = Column(Integer, ForeignKey("diseases.disease_id"))
     processed_image = Column(String, nullable=False)
     confidence = Column(Float, nullable=False)
-    bbox = Column(JSON, nullable=False)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow())
 
     request = relationship("UserRequests", back_populates="results")

@@ -15,12 +15,13 @@ services:
       - minio
     volumes:
       # Монтируем папку с YOLO весами
-      - ./runs/detect/plant_disease_exp2:/app/model
+      - ./runs/detect/plant_disease_exp3:/app/model
       # Монтируем папку с ai_model для разработки (код можно менять без пересборки)
       - ./ai_model:/app/ai_model
       # Папка output для временных файлов/результатов
       - ./output:/app/output
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload --log-level debug
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000
+
 
   db:
     image: postgres:14
