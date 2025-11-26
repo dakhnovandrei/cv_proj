@@ -8,6 +8,7 @@ from ..database import get_db
 from sqlalchemy.orm import Session
 from ai_model.analysis import detection_with_minio
 from ..models import AnalysisResult, Diseases, UserRequests
+from sqlalchemy import func
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
 
@@ -35,6 +36,7 @@ async def analysis(
             image_path=temp_path,
             color_threshold=color_threshold
         )
+        print(color_stats)
         if not res_image_url:
             raise HTTPException(status_code=500, detail="Ошибка в загрузке изображения в MinIO")
         user_request = UserRequests(
@@ -50,25 +52,26 @@ async def analysis(
         for info in color_stats:
             disease_name = info["class"]
             confidence = float(info["confidence"])
-            bbox = list(info["bbox"])
-            disease = db.query(Diseases).filter(Diseases.disease_name == disease_name).first()
 
+            disease = db.query(Diseases).filter(func.lower(Diseases.disease_name) == disease_name.lower()).first()
             if not disease:
+                print(f"[DEBUG] Disease not found in DB: '{disease_name}'")
                 continue
 
             analysis_res = AnalysisResult(
                 request_id=user_request.request_id,
                 disease_id=disease.disease_id,
+                processed_image=res_image_url,
                 confidence=confidence,
-                bbox=bbox
             )
             db.add(analysis_res)
-            db.commit()
             results.append({
                 "disease": disease.disease_name,
                 "confidence": round(confidence, 2),
                 "recommendation": disease.recommendation
             })
+        db.commit()
+
         return AnalysisResponse(
             image_url=res_image_url,
             results=results
