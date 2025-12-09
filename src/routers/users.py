@@ -7,7 +7,8 @@ from datetime import timedelta
 from sqlalchemy.orm import Session
 from src.routers.auth import create_access_token, create_refresh_token, pwd_context, get_current_user
 from dotenv import load_dotenv
-from src.schemas import UserCreate, AuthResponse, UserLogin, AnalysisHistoryList, DiseaseResult, AnalysisHistoryItem
+from src.schemas import UserCreate, AuthResponse, UserLogin, AnalysisHistoryList, DiseaseResult, AnalysisHistoryItem, \
+    UserProfile
 
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -103,6 +104,7 @@ def request_history(
                     disease_res.append(
                         DiseaseResult(
                             disease=disease.disease_name,
+                            confidence=res.confidence,
                             recommendation=disease.recommendation
                         )
                     )
@@ -145,6 +147,7 @@ def request_analysis(
             disease_res.append(
                 DiseaseResult(
                     disease=disease.disease_name,
+                    confidence=res.confidence,
                     recommendation=disease.recommendation
                 ))
     return AnalysisHistoryItem(
@@ -152,4 +155,13 @@ def request_analysis(
         image_url=user_request.image_path,
         created_at=user_request.timestamp,
         results=disease_res
+    )
+
+
+@router.get('/profile', response_model=UserProfile)
+def profile(user=Depends(get_current_user)):
+    return UserProfile(
+        username=user.username,
+        email=user.email,
+        is_active=user.is_active
     )

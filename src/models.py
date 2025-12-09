@@ -25,7 +25,7 @@ class UserRequests(Base):
 
     request_id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.user_id"))
-    image_path = Column(String(255), nullable=False)
+    image_path = Column(Text, nullable=False)
     timestamp = Column(DateTime, default=datetime.datetime.utcnow())
 
     user = relationship("Users", back_populates="user_requests")

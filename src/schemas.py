@@ -22,6 +22,7 @@ class UserLogin(BaseModel):
 
 class DiseaseResult(BaseModel):
     disease: str = Field(example="leaf_spot")
+    confidence: float = Field(example="0.57")
     recommendation: str = Field(example="Apply fungicide...")
 
 
@@ -42,3 +43,9 @@ class AnalysisHistoryList(BaseModel):
     page: int = Field(example=1, ge=1)
     page_size: int = Field(example=10, ge=1, le=100)
     history: list[AnalysisHistoryItem]
+
+
+class UserProfile(BaseModel):
+    username: str = Field(example='username')
+    email: EmailStr = Field(example='user@mail.ru')
+    is_active: bool = Field(example='True')

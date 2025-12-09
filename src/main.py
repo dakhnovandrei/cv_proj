@@ -2,6 +2,8 @@ import logging
 import os
 import sys
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.database import engine, SessionLocal
 from src.routers.users import router
 from src.routers.analyze_image import analyze_router
@@ -17,12 +19,19 @@ config.JWT_ACCESS_COOKIE_NAME = 'my_access_token'
 config.JWT_TOKEN_LOCATION = ["cookies"]
 security = AuthX(config=config)
 
-Base.metadata.drop_all(bind=engine)
-Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 app.include_router(router, prefix='/api/v1')
 app.include_router(analyze_router, prefix='/api/v2', tags=["Analyze"])
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['http://localhost:5174', 'http://127.0.0.1:5174'],
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*']
+)
 
 logger = logging.getLogger("uvicorn")  # использовать логгер Uvicorn
 logger.setLevel(logging.INFO)
@@ -30,12 +39,11 @@ logger.setLevel(logging.INFO)
 
 @app.on_event("startup")
 def on_startup():
-    logger.info("Initializing database...")
-    logger.info("Tables created (if not exist).")
+    # logger.info("Initializing database...")
+    # logger.info("Tables created (if not exist).")
     db = SessionLocal()
     try:
-        Base.metadata.create_all(bind=engine)
-        logger.info("Database connection successful.")
+        pass
     except Exception as e:
         logger.error(f"Database connection failed: {e}")
     finally:
