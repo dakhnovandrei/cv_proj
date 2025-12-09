@@ -1,8 +1,8 @@
-"""seed initial data for diseases table
+"""fill diseases table
 
-Revision ID: e74412c43923
-Revises: 
-Create Date: 2025-12-09 20:40:59.628997
+Revision ID: bbd7dc0be011
+Revises: 3d94fb657ca6
+Create Date: 2025-12-09 21:11:35.754650
 
 """
 from typing import Sequence, Union
@@ -11,9 +11,10 @@ from alembic import op
 import sqlalchemy as sa
 from sqlalchemy.sql import table, column
 
+
 # revision identifiers, used by Alembic.
-revision: str = 'e74412c43923'
-down_revision: Union[str, Sequence[str], None] = None
+revision: str = 'bbd7dc0be011'
+down_revision: Union[str, Sequence[str], None] = '3d94fb657ca6'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -142,16 +143,22 @@ disease_data = [
 
 
 def upgrade() -> None:
+    
     diseases_table = table(
-        'diseases',
+        'diseases', 
         column('disease_name', sa.String),
         column('recommendation', sa.String)
     )
+
+    # Производим массовую вставку данных
     op.bulk_insert(diseases_table, disease_data)
 
 
 def downgrade() -> None:
+    # ОТКАТ: Удаляем вставленные данные по их именам
     names_to_delete = [item["disease_name"] for item in disease_data]
+    
+    # Используем op.execute с параметрами для безопасности
     op.execute(
         sa.text("DELETE FROM diseases WHERE disease_name IN :names"),
         names=tuple(names_to_delete)

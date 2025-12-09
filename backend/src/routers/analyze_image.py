@@ -6,7 +6,7 @@ from fastapi import HTTPException, Depends, APIRouter, UploadFile, File
 from .auth import get_current_user
 from ..database import get_db
 from sqlalchemy.orm import Session
-from ai_model.analysis import detection_with_minio
+from ai_model.analysis import detection_with_minio 
 from ..models import AnalysisResult, Diseases, UserRequests
 from sqlalchemy import func
 

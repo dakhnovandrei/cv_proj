@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from src.routers.minio_client import upload_images
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-MODEL_PATH = os.path.join(BASE_DIR, "app", "model", "weights", "best.pt")
+MODEL_PATH = os.path.join(BASE_DIR, "model", "weights", "best.pt")
 dataset = os.path.join(os.path.dirname(__file__), 'plant-disease-1')
 DATA_YAML = os.path.join(dataset, 'data.yaml')
 

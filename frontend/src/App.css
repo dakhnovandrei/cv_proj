@@ -1,0 +1,226 @@
+/* src/App.css */
+:root {
+  --bg-left: #eff6ff;
+  --bg-right: #caffdf;
+  --text-main: #1f2937; /* Темно-серый, почти черный для основного текста */
+  --text-secondary: #4b5563; /* Чуть светлее для второстепенного */
+  --input-text: #374151; /* Цвет текста внутри инпутов */
+  --btn-blue: #dbeafe;
+  --btn-text: #1e40af;
+}
+
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: var(--text-main); /* Базовый цвет текста для всего сайта */
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Левая и Правая панели (общие) */
+.split-screen {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.left-panel {
+  flex: 1;
+  background-color: var(--bg-left);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+.right-panel {
+  flex: 1;
+  background-color: var(--bg-right);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Стили для формы авторизации */
+.auth-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 300px;
+  text-align: center;
+  z-index: 10;
+}
+
+/* --- ИСПРАВЛЕНИЕ 1: Цвет текста в инпутах --- */
+.auth-input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 20px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  box-sizing: border-box;
+  
+  /* Делаем вводимый текст темно-серым */
+  color: var(--input-text); 
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Цвет плейсхолдера (подсказки) */
+.auth-input::placeholder {
+  color: #9ca3af;
+}
+
+.auth-card label {
+  color: var(--text-secondary) !important; /* Принудительно серый для лейблов */
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.plant-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Кнопки */
+.btn {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 5px;
+  transition: 0.2s;
+  /* Кнопки оставляем цветными */
+}
+
+.btn-primary {
+  background-color: var(--btn-blue);
+  color: var(--btn-text);
+}
+
+.btn-primary:hover {
+  background-color: #bfdbfe;
+}
+
+/* Dashboard & Result Layout */
+.dash-layout {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- ИСПРАВЛЕНИЕ 2 и 3: Текст на Dashboard и Result --- */
+.dash-main {
+  flex: 1.5;
+  background: var(--bg-left);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  
+  /* Принудительно устанавливаем цвет текста */
+  color: var(--text-main); 
+}
+
+.dash-main h2, .dash-main h3, .dash-main p {
+  color: #000; /* Заголовки делаем совсем черными для контраста */
+}
+
+.dash-sidebar {
+  flex: 1;
+  background: var(--bg-right);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Выравнивание текста по левому краю */
+  
+  /* Принудительно устанавливаем цвет текста */
+  color: var(--text-main);
+}
+
+/* Специально для инструкций и списков */
+.dash-sidebar h1, 
+.dash-sidebar h3, 
+.dash-sidebar li, 
+.dash-sidebar p {
+  color: #111827; /* Почти черный цвет */
+}
+
+.dash-sidebar ol {
+    padding-left: 20px; /* Чтобы маркеры списка были видны */
+}
+
+.dash-sidebar li {
+    margin-bottom: 10px; /* Отступ между пунктами */
+}
+
+.preview-box {
+  width: 400px;
+  height: 300px;
+  background: #e5e7eb; /* Серый фон заглушки */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px dashed #9ca3af; /* Рамка */
+}
+
+.preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Чтобы картинка помещалась целиком */
+}
+
+.preview-text {
+  font-size: 1.5em;
+  color: #6b7280; /* Серый текст внутри заглушки */
+  font-weight: bold;
+}
+
+.history-list {
+  margin-top: 20px;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.history-item {
+  background: rgba(255, 255, 255, 0.5); /* Полупрозрачный белый */
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+  
+  /* Текст внутри истории */
+  color: #000;
+  font-weight: 500;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.history-item:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.disease-info-card {
+  text-align: left;
+  max-width: 500px;
+  color: var(--text-main);
+}

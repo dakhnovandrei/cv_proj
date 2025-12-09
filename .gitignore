@@ -83,5 +83,5 @@ htmlcov/
 .coverage.*
 
 
-ai_model/plant-disease-1
+backend/ai_model/plant-disease-1
 plant-diseases-detection-system-18

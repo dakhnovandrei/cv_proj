@@ -2,25 +2,36 @@ version: '3.9'
 
 services:
   web:
+      build:
+        context: .
+        dockerfile: ./backend/Dockerfile
+      container_name: fastapi-web
+      command: /bin/bash -c "cd backend && alembic upgrade head && uvicorn --app-dir /app/backend/src main:app --host 0.0.0.0 --port 8000"
+      ports:
+        - "8000:8000"
+      env_file:
+        - .env
+      environment:
+        PYTHONPATH: /app/backend
+      depends_on:
+        - db
+        - minio
+      volumes:
+        - ./backend:/app/backend
+        - ./backend/runs/detect/plant_disease_exp3:/app/model
+        - ./ai_model:/app/ai_model
+  frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
-    container_name: fastapi-web
+    container_name: frontend-web
     ports:
-      - "8000:8000"
-    env_file:
-      - .env
+      - "3000:80"
     depends_on:
-      - db
-      - minio
-    volumes:
-      # Монтируем папку с YOLO весами
-      - ./runs/detect/plant_disease_exp3:/app/model
-      # Монтируем папку с ai_model для разработки (код можно менять без пересборки)
-      - ./ai_model:/app/ai_model
-      # Папка output для временных файлов/результатов
-      - ./output:/app/output
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8000
+      - web
+
+  
+    
 
 
   db:

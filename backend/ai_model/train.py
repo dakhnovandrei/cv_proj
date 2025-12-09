@@ -5,7 +5,7 @@ import multiprocessing as mp
 
 def main():
     dataset = "C:\\Users\\User\\Desktop\\proj_1\\ai_model\\plant-disease-1"
-    model = YOLO('C:\\Users\\User\\Desktop\\proj_1\\runs\\detect\\plant_disease_exp3\\weights\\best.pt')
+    model = YOLO('/backend/runs/detect/plant_disease_exp3/weights/best.pt')
 
     data_yaml = os.path.join(dataset, 'data.yaml')
 
