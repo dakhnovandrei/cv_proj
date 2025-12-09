@@ -56,6 +56,7 @@ docker-compose up -d --build
 http://localhost:3000
 ```
 **Стек технологий:**
+
     -YOLO (для распознавания болезней)
     
     -FastAPI, SQLAlchemy, Alembic(backend)
