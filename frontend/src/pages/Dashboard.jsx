@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axios';
 import '../App.css';
+import example1 from '../assets/example1.jpg'
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const Dashboard = () => {
   const [preview, setPreview] = useState(null);
   
   // Получаем email из localStorage или ставим заглушку
-  const userEmail = localStorage.getItem('username') || "Ваш никнейм";
+  const userName = localStorage.getItem('username') || "Ваш никнейм";
 
   const handleFileSelect = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -66,7 +67,7 @@ const Dashboard = () => {
             boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
         }}>
             <img 
-                src="src/images/example1.jpg" 
+                src={example1}
                 alt="example" 
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 onError={(e) => e.target.src = 'https://via.placeholder.com/300x200?text=Пример+растения'}
@@ -103,7 +104,7 @@ const Dashboard = () => {
       {/* Правая часть - Инструкция и профиль */}
       <div className="dash-sidebar">
         <div style={{alignSelf: 'center', textAlign: 'center', marginBottom: '40px'}}>
-            <h3>{userEmail}</h3>
+            <h3>{userName}</h3>
             <button className="btn" style={{background: '#bcebc3', color: '#1f2937'}} onClick={() => navigate('/result')}>
                 История
             </button>

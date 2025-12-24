@@ -18,7 +18,7 @@ services:
         - minio
       volumes:
         - ./backend:/app/backend
-        - ./backend/runs/detect/plant_disease_exp3:/app/model
+        - ./backend/runs/detect/plant_disease_exp5:/app/model
         - ./ai_model:/app/ai_model
   frontend:
     build:

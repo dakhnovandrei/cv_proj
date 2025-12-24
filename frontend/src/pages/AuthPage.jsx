@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../api/axios';
 import '../App.css';
+import plant1 from '../assets/plant1.jpg'
 
 // Тебе понадобится изображение монстеры, положи его в папку public или src/assets
 // import monsteraImg from '../assets/monstera.jpg'; 
@@ -49,7 +50,7 @@ const AuthPage = () => {
 
         // Если успех, куки установлены, переходим в дешборд
         // Сохраним email в localStorage просто для отображения "Ваш никнейм"
-        localStorage.setItem('username', cur_user.username);
+        localStorage.setItem('username', cur_user.data.username);
         navigate('/dashboard');
       }
     } catch (error) {
@@ -148,7 +149,7 @@ const AuthPage = () => {
       <div className="right-panel" style={{padding: 0}}>
          {/* Вставь сюда путь к своей картинке */}
          <img 
-            src="src/images/plant1.jpg" 
+            src={plant1}
             alt="Plant" 
             className="plant-bg-image" 
          />
